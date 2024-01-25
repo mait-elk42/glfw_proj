@@ -29,6 +29,10 @@
 #ifndef _glfw3_h_
 #define _glfw3_h_
 
+#ifndef GL_SILENCE_DEPRECATION
+#define GL_SILENCE_DEPRECATION
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif

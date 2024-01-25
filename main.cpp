@@ -1,4 +1,5 @@
 #include <GLFW/glfw3.h>
+#include <GFX/game.hpp>
 #include <iostream>
 
 #define W_HEIGHT 500
@@ -8,26 +9,6 @@ void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
-}
-
-void winresizingCallback(GLFWwindow *window, int w, int h)
-{
-    int win_width, win_height;
-    int win_xpos, win_ypos;
-    glfwGetWindowSize(window, &win_width, &win_height);
-    glfwGetWindowPos(window, &win_xpos, &win_ypos);
-    if (win_width >= 1000)
-        win_width = 1000;
-    if (win_height >= 1000)
-        win_height = 1000;
-    glfwSetWindowSize(window, win_width, win_height);
-    glViewport(win_width, win_height, win_width, win_height);
-    glfwSetWindowPos(window, win_xpos, win_ypos);
-}
-
-void winposchangeCallback(GLFWwindow *window, int x, int y)
-{
-    // printf("%d , %d\n", x, y);
 }
 
 void put_pixel(int x_pos, int y_pos) {
@@ -60,7 +41,7 @@ void    _put_square(int x, int y)
 //     }
 // }
 
-int main() {
+int maain() {
     if (!glfwInit())
         return -1;
 
@@ -69,13 +50,10 @@ int main() {
         glfwTerminate();
         return -1;
     }
-
+    
     glfwMakeContextCurrent(window);
 
     glfwSetKeyCallback(window, keyCallback);
-    glfwSetFramebufferSizeCallback(window, winresizingCallback);
-    glfwSetWindowPosCallback(window, winposchangeCallback);
-    // glfwSetMouseButtonCallback(window, mouseCallback);
 
     while (!glfwWindowShouldClose(window)) {
         int width, height;
@@ -108,5 +86,17 @@ int main() {
     }
 
     glfwTerminate();
+    return 0;
+}
+
+
+int main() {
+    int i = 0;
+
+    GameContext *game = new GameContext(100, 100, (char *)"GAME ! OSF", NULL, NULL);
+    while (game->is_alive()) {
+        printf("!! GREAT WORK %d\n", i++);
+        i++;
+    }
     return 0;
 }
