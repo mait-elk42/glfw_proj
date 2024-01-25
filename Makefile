@@ -6,12 +6,12 @@
 #    By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/25 19:09:01 by mait-elk          #+#    #+#              #
-#    Updated: 2024/01/25 19:18:46 by mait-elk         ###   ########.fr        #
+#    Updated: 2024/01/25 22:14:30 by mait-elk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 FLAGS= -Werror -Wextra -Wall 
-HEADPATH= include/GFX/test.hpp 
+HEADPATH= include/GFX/test.hpp include/GFX/game.hpp 
 SRCS= main.c srcs/test.c 
 OBJS= main.o $(SRCS:.c=.o) 
 LIBGFX= lib/libgfx.a 

@@ -11,16 +11,6 @@ void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods
     }
 }
 
-void put_pixel(int x_pos, int y_pos) {
-
-    glEnable(GL_POINT_SMOOTH);
-    glBegin(GL_POINTS);
-    glPointSize(0.1f);
-    glColor3f(1.0f, 1.0f, 1.0f);
-    glVertex2i(x_pos, y_pos);
-    glEnd();
-}
-
 void    _put_square(int x, int y)
 {
 
@@ -74,9 +64,9 @@ int maain() {
         // int y = 300;
         // while (y < 500)
         // {
-            int x = 0;
-            while (x < 500)
-                put_pixel(x++, 100);
+            // int x = 0;
+            // while (x < 500)
+                // put_pixel(x++, 100);
         //     y++;
         // }
         // put_pixel(0, 0);
@@ -89,13 +79,20 @@ int maain() {
     return 0;
 }
 
-
 int main() {
     int i = 0;
 
-    GameContext *game = new GameContext(100, 100, (char *)"GAME ! OSF", NULL, NULL);
+    GameContext *game = new GameContext(1000, 1000, (char *)"GAME ! OSF", NULL, NULL);
     while (game->is_alive()) {
-        printf("!! GREAT WORK %d\n", i++);
+        glViewport(1000, 1000, 1000, 1000);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glOrtho(0, 1000, 0, 1000, -1, 1);
+        glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        printf("!! GREAT WORK %d\n", i);
+        game->put_pixel(0, 0, -1);
+        glfwSwapBuffers(game->windowptr);
         i++;
     }
     return 0;
