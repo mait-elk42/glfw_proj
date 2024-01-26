@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include <GLFW/glfw3.h>
 #include <GFX/game.hpp>
 #include <iostream>
@@ -82,16 +83,17 @@ int maain() {
 int main() {
     int i = 0;
 
+    Vector2 *v = new Vector2(0, 0);
     GameContext *game = new GameContext(1000, 1000, (char *)"GAME ! OSF", NULL, NULL);
     while (game->is_alive()) {
-        glViewport(1000, 1000, 1000, 1000);
+        glViewport(0, 1000, 1000, 1000);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glOrtho(0, 1000, 0, 1000, -1, 1);
+        glOrtho(0, 500, 0, 500, -1, 1);
         glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        printf("!! GREAT WORK %d\n", i);
-        game->put_pixel(0, 0, -1);
+        printf("i = %d\n", i);
+        game->put_pixel(501, 0, -1);
         glfwSwapBuffers(game->windowptr);
         i++;
     }
