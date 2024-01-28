@@ -6,7 +6,7 @@
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 21:37:34 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/01/28 16:59:56 by mait-elk         ###   ########.fr       */
+/*   Updated: 2024/01/28 18:52:37 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ GameContext::GameContext(int window_width, int window_height, char *name, GLFWmo
 	glfwMakeContextCurrent(windowptr);
 	glfwSetKeyCallback(windowptr, key_callback_def);
     glMatrixMode(GL_PROJECTION);
+	this->FPS = 0;
+	this->DeltaTime = 0;
 	this->time.curr_time = glfwGetTime();
 	this->time.last_time = glfwGetTime();
 }
@@ -52,6 +54,8 @@ GameContext::~GameContext()
 
 int	GameContext::is_alive()
 {
+	static int tfps = 0;
+	static float second = 0;
 	if (!glfwWindowShouldClose(windowptr))
 	{
 		this->time.curr_time = glfwGetTime();
@@ -61,18 +65,38 @@ int	GameContext::is_alive()
 		glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
 		glfwPollEvents();
+		if (second < 1)
+		{
+			second += this->DeltaTime;
+			tfps++;
+		}
+		else{
+			this->FPS = tfps;
+			second = 0;
+			tfps = 0;
+		}
 		return (1);
 	}
 	return (0);
 }
 
-void	GameContext::put_pixel(Vector2 pos, int color)
+// void	GameContext::put_pixel(Vector2 pos, int color)
+// {
+// 	(void)color;
+// 	glEnable(GL_POINT_SMOOTH);
+// 	glEnable(GL_BLEND);
+//     glBegin(GL_POINTS);
+// 	glColor4i(255, 255, 255, 255);
+// 	glVertex2i(pos.x, pos.y);
+//     glEnd();
+// }
+
+void GameContext::put_pixel(Vector2 pos, Color c)
 {
-	(void)color;
-	glEnable(GL_POINT_SMOOTH);
+    glEnable(GL_POINT_SMOOTH);
     glBegin(GL_POINTS);
-	glColor4f(1, 1, 1, 1);
-	glVertex2i(pos.x, pos.y);
+    glColor3f((float)c.r /255.0f, (float)c.g /255.0f, (float)c.b /255.0f);
+    glVertex2i(pos.x, pos.y);
     glEnd();
 }
 

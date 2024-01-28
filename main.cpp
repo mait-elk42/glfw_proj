@@ -6,7 +6,7 @@
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 22:48:20 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/01/28 17:01:25 by mait-elk         ###   ########.fr       */
+/*   Updated: 2024/01/28 19:31:00 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@
 #define W_WIDTH 500
 
 int main() {
-    GameObject square(Vector2Zero, Vector2Zero);
     int speed = 500;
-    int gravity = 2;
+    int gravity = 250;
 
 
-    GameContext *game = new GameContext(1000, 1000, (char *)"GAME ! OSF", NULL, NULL);
+    GameObject square(Vector2Zero, Vector2(10, 10));
+    GameContext *game = new GameContext(500, 1000, (char *)"GAME ! OSF", NULL, NULL);
     // glfwSetInputMode(game->windowptr, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
     // glfwSetInputMode(game->windowptr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-    Vector2 v(500, 500);
+    Vector2 v(250, 250);
     
 
     while (game->is_alive())
@@ -39,22 +39,27 @@ int main() {
         v.x -= (speed * (game->IsPressed('A'))) * game->DeltaTime;
         v.y += (speed * (game->IsPressed('S'))) * game->DeltaTime;
         v.x += (speed * (game->IsPressed('D'))) * game->DeltaTime;
-        // v.y += (currtime - lasttime) * (gravity);
+        if (v.y + square.size.y < 500)
+            v.y += game->DeltaTime * (gravity);
 
-        printf("Delta(%f)\n", game->DeltaTime);
+        // printf("FPS(%d)\n", game->FPS);
         int y = 0;
-        while (y < 100)
+        while (y < square.size.y)
         {
             int x = 0;
-            while(x < 100)
+            while(x < square.size.x)
             {
                 Vector2 pos(v.x+x, v.y+y);
-                game->put_pixel(pos, -1);
+                // printf("[x%d y%d]\n", x, y);
+                // printf("%d", square.buffer[(y * square.size.y)+x]);
+                game->put_pixel(pos, Color(square.buff_pixels[(y * square.size.y)+x].r,
+                    square.buff_pixels[(y * square.size.y)+x].g, square.buff_pixels[(y * square.size.y)+x].b));
                 x++;
             }
-            // printf("x%d y%d\n", v.x, v.y);
+            // printf("\n");
             y++;
-        }
+        }        
+        // printf("x%d y%d\n", v.x, v.y);
         glfwSwapBuffers(game->windowptr);
     }
     return 0;
