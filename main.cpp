@@ -1,101 +1,49 @@
-#include <unistd.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/26 22:48:20 by mait-elk          #+#    #+#             */
+/*   Updated: 2024/01/28 04:36:06 by mait-elk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <GLFW/glfw3.h>
-#include <GFX/game.hpp>
-#include <iostream>
+#include <NSX/Game.hpp>
+#include <dlfcn.h>
 
 #define W_HEIGHT 500
 #define W_WIDTH 500
 
-void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
-    }
-}
-
-void    _put_square(int x, int y)
-{
-
-}
-
-// void  mouseCallback(GLFWwindow* window, int btncode, int key_press, int action) {
-//     double  posx;
-//     double  posy;
-
-//     glfwGetCursorPos(window, &posx, &posy);
-//     if (key_press)
-//     {
-//         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-//         glClear(GL_COLOR_BUFFER_BIT);
-//         printf("%f %f\n",posx, posy);
-//         put_pixel((int)posx, (int)posy);
-        
-//     }
-// }
-
-int maain() {
-    if (!glfwInit())
-        return -1;
-
-    GLFWwindow* window = glfwCreateWindow(W_HEIGHT, W_WIDTH, "OpenGL Pixel Example", NULL, NULL);
-    if (!window) {
-        glfwTerminate();
-        return -1;
-    }
-    
-    glfwMakeContextCurrent(window);
-
-    glfwSetKeyCallback(window, keyCallback);
-
-    while (!glfwWindowShouldClose(window)) {
-        int width, height;
-        
-        glfwGetWindowSize(window, &width, &height);
-        // printf("%d %d\n",width, height);
-        glViewport(width, height, width, height);
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glOrtho(0, width, 0, height, -1, 1);
-
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
-
-        glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        // int y = 300;
-        // while (y < 500)
-        // {
-            // int x = 0;
-            // while (x < 500)
-                // put_pixel(x++, 100);
-        //     y++;
-        // }
-        // put_pixel(0, 0);
-        // _put_square(10, 10);
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
-
-    glfwTerminate();
-    return 0;
-}
-
 int main() {
-    int i = 0;
+    int speed = 5;
 
-    Vector2 *v = new Vector2(0, 0);
+    Vector2 v(500, 500);
+
     GameContext *game = new GameContext(1000, 1000, (char *)"GAME ! OSF", NULL, NULL);
-    while (game->is_alive()) {
-        glViewport(0, 1000, 1000, 1000);
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glOrtho(0, 500, 0, 500, -1, 1);
-        glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-        printf("i = %d\n", i);
-        game->put_pixel(501, 0, -1);
+    game->ViewPort(0, 0, 2000, 2000);
+    while (game->is_alive())
+    {
+        game->Clear_Window();
+        game->Ortho_Projection(0, 1000, 0, 1000, -1, 1);
+        v.y += speed * (game->IsPressed('W'));
+        v.x -= speed * (game->IsPressed('A'));
+        v.y -= speed * (game->IsPressed('S'));
+        v.x += speed * (game->IsPressed('D'));
+        // v.x *= !(v.x > 1000);
+        // v.y *= !(v.y > 1000);
+        // if (v.x < 0)
+        //     v.x = 1000;
+        // if (v.y < 0)
+        //     v.y = 1000;
+        Vector2 mousepos;
+    
+        mousepos = game->GetMousePosition();
+        printf("x%d y%d (MOUSE x%d y%d)\n", v.x, v.y, mousepos.x, mousepos.y);
+        game->put_pixel(v, -1);
         glfwSwapBuffers(game->windowptr);
-        i++;
     }
     return 0;
 }

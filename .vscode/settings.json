@@ -7,6 +7,15 @@
 		"limits": "cpp",
 		"string": "cpp",
 		"iosfwd": "cpp",
-		"new": "cpp"
+		"new": "cpp",
+		"__bit_reference": "cpp",
+		"array": "cpp",
+		"bitset": "cpp",
+		"functional": "cpp",
+		"iterator": "cpp",
+		"memory": "cpp",
+		"string_view": "cpp",
+		"unordered_map": "cpp",
+		"vector": "cpp"
 	}
 }
