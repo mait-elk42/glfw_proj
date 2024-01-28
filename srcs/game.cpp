@@ -6,7 +6,7 @@
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 21:37:34 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/01/28 04:35:17 by mait-elk         ###   ########.fr       */
+/*   Updated: 2024/01/28 06:47:03 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ GameContext::~GameContext()
 int	GameContext::is_alive()
 {
 	if (!glfwWindowShouldClose(windowptr))
-	{			
+	{
+		glfwGetFramebufferSize(windowptr, &this->window_width, &this->window_height);
 		glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
 		glfwPollEvents();
@@ -64,11 +65,10 @@ void	GameContext::put_pixel(Vector2 pos, int color)
 {
 
 	(void)color;
-    glPointSize(50.0f);
 	glEnable(GL_POINT_SMOOTH);
     glBegin(GL_POINTS);
-    glColor3f(1.0f, 1.0f, 1.0f);
-    glVertex2i(pos.x, pos.y);
+	glColor4f(1, 1, 1, 1);
+	glVertex2i(pos.x, pos.y);
     glEnd();
 }
 
@@ -92,7 +92,7 @@ void	GameContext::put_triangle(Vector2 pos1, Vector2 pos2, Vector2 pos3, int col
 {
 	(void)color;
     glBegin(GL_TRIANGLES);
-    glColor3f(1.0f, 1.0f, 1.0f);
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     glVertex2i(pos1.x, pos1.y);
     glVertex2i(pos2.x, pos2.y);
     glVertex2i(pos3.x, pos3.y);

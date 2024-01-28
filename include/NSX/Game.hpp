@@ -6,7 +6,7 @@
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 19:21:26 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/01/28 04:14:54 by mait-elk         ###   ########.fr       */
+/*   Updated: 2024/01/28 04:53:13 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ class GameContext
 private:
 	GLFWmonitor*	monitor;
 	GLFWwindow*		share;
+public:
 	int				window_width;
 	int				window_height;
-public:
 	GLFWwindow		*windowptr;
 			GameContext(int window_width, int window_height, char *name, GLFWmonitor* monitor, GLFWwindow* share);
 			~GameContext();
