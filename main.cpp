@@ -6,7 +6,7 @@
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 22:48:20 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/01/28 06:48:39 by mait-elk         ###   ########.fr       */
+/*   Updated: 2024/01/28 17:01:25 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,34 +18,42 @@
 #define W_WIDTH 500
 
 int main() {
-    int speed = 5;
+    GameObject square(Vector2Zero, Vector2Zero);
+    int speed = 500;
+    int gravity = 2;
 
 
     GameContext *game = new GameContext(1000, 1000, (char *)"GAME ! OSF", NULL, NULL);
     // glfwSetInputMode(game->windowptr, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+    // glfwSetInputMode(game->windowptr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    Vector2 v(500, 500);
     
 
     while (game->is_alive())
     {
-        Vector2 p;
-
-        glfwGetWindowSize(game->windowptr, &p.x, &p.y);
         game->ViewPort(0, 0, game->window_width, game->window_height);
-        Vector2 v(p.x/2, p.y/2);
-        game->Ortho_Projection(0, p.x, p.y, 0, -1, 1);
+        game->Ortho_Projection(0, game->GetWindowSize().x, game->GetWindowSize().y, 0, -1, 1);
         game->Clear_Window();
-        // v.y -= speed * (game->IsPressed('W'));
-        // v.x -= speed * (game->IsPressed('A'));
-        // v.y += speed * (game->IsPressed('S'));
-        // v.x += speed * (game->IsPressed('D'));
 
-        printf("x%d y%d\n", v.x, v.y);
-        int x = 0;
-        while(x < 100)
+        v.y -= (speed * (game->IsPressed('W'))) * game->DeltaTime;
+        v.x -= (speed * (game->IsPressed('A'))) * game->DeltaTime;
+        v.y += (speed * (game->IsPressed('S'))) * game->DeltaTime;
+        v.x += (speed * (game->IsPressed('D'))) * game->DeltaTime;
+        // v.y += (currtime - lasttime) * (gravity);
+
+        printf("Delta(%f)\n", game->DeltaTime);
+        int y = 0;
+        while (y < 100)
         {
-            Vector2 pos(v.x+x, v.y);
-            game->put_pixel(pos, -1);
-            x++;
+            int x = 0;
+            while(x < 100)
+            {
+                Vector2 pos(v.x+x, v.y+y);
+                game->put_pixel(pos, -1);
+                x++;
+            }
+            // printf("x%d y%d\n", v.x, v.y);
+            y++;
         }
         glfwSwapBuffers(game->windowptr);
     }

@@ -16,6 +16,12 @@
 		"memory": "cpp",
 		"string_view": "cpp",
 		"unordered_map": "cpp",
-		"vector": "cpp"
+		"vector": "cpp",
+		"__locale": "cpp",
+		"__nullptr": "cpp",
+		"istream": "cpp",
+		"locale": "cpp",
+		"ostream": "cpp",
+		"streambuf": "cpp"
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 21:37:34 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/01/28 06:47:03 by mait-elk         ###   ########.fr       */
+/*   Updated: 2024/01/28 16:59:56 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ GameContext::GameContext(int window_width, int window_height, char *name, GLFWmo
 	glfwMakeContextCurrent(windowptr);
 	glfwSetKeyCallback(windowptr, key_callback_def);
     glMatrixMode(GL_PROJECTION);
+	this->time.curr_time = glfwGetTime();
+	this->time.last_time = glfwGetTime();
 }
 
 GameContext::~GameContext()
@@ -52,6 +54,9 @@ int	GameContext::is_alive()
 {
 	if (!glfwWindowShouldClose(windowptr))
 	{
+		this->time.curr_time = glfwGetTime();
+		this->DeltaTime = this->time.curr_time - this->time.last_time;
+		this->time.last_time = this->time.curr_time;
 		glfwGetFramebufferSize(windowptr, &this->window_width, &this->window_height);
 		glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
@@ -63,7 +68,6 @@ int	GameContext::is_alive()
 
 void	GameContext::put_pixel(Vector2 pos, int color)
 {
-
 	(void)color;
 	glEnable(GL_POINT_SMOOTH);
     glBegin(GL_POINTS);
@@ -112,4 +116,28 @@ Vector2	GameContext::GetMousePosition()
 	glfwGetCursorPos(this->windowptr, &x, &y);
 	pos = Vector2((int)x, (int)y);
 	return (pos);
+}
+
+Vector2	GameContext::GetWindowPosition()
+{
+	Vector2 wpos;
+
+	glfwGetWindowPos(windowptr, &wpos.x, &wpos.y);
+	return (wpos);
+}
+
+Vector2	GameContext::GetWindowSize()
+{
+	Vector2 wsize;
+
+	glfwGetWindowSize(windowptr, &wsize.x, &wsize.y);
+	return (wsize);
+}
+
+Vector2	GameContext::GetFramebufferSize()
+{
+	Vector2 fbuffsize;
+
+	glfwGetFramebufferSize(windowptr, &fbuffsize.x, &fbuffsize.y);
+	return (fbuffsize);
 }

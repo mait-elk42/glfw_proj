@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   SquareShape.cpp                                    :+:      :+:    :+:   */
+/*   GameObject.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/28 02:19:54 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/01/28 02:48:41 by mait-elk         ###   ########.fr       */
+/*   Created: 2024/01/28 02:17:56 by mait-elk          #+#    #+#             */
+/*   Updated: 2024/01/28 16:06:05 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <NSX/SquareShape.hpp>
+#ifndef GAMEOBJECT_HPP
+#define GAMEOBJECT_HPP
 #include <NSX/Vector2.hpp>
 
-SquareShape::SquareShape()
+class GameObject
 {
-	this->position = Vector2::NewVectorZero();
-}
+private:
+	// unsigned char	*buffer;
+	Vector2			size;
+	Vector2			position;
+public:
+	GameObject();
+	GameObject(Vector2 position, Vector2 size);
+	~GameObject();
+};
 
-SquareShape::SquareShape(Vector2 position, Vector2 size)
-{
-	this->size = size;
-	this->position = position;
-}
-
-SquareShape::~SquareShape()
-{
-	
-}
+#endif

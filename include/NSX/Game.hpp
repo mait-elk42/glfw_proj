@@ -6,7 +6,7 @@
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 19:21:26 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/01/28 04:53:13 by mait-elk         ###   ########.fr       */
+/*   Updated: 2024/01/28 17:00:19 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,30 @@
 #include <stdlib.h>
 #include <GLFW/glfw3.h>
 #include <NSX/Vector2.hpp>
-#include <NSX/SquareShape.hpp>
+#include <NSX/GameObject.hpp>
+
+typedef struct __Time{
+	float	curr_time;
+	float	last_time;
+} Time;
 
 class GameContext
 {
 private:
 	GLFWmonitor*	monitor;
 	GLFWwindow*		share;
+	Time			time;
 public:
+	float			DeltaTime;
 	int				window_width;
 	int				window_height;
 	GLFWwindow		*windowptr;
 			GameContext(int window_width, int window_height, char *name, GLFWmonitor* monitor, GLFWwindow* share);
 			~GameContext();
 	Vector2	GetMousePosition();
+	Vector2	GetWindowPosition();
+	Vector2	GetWindowSize();
+	Vector2	GetFramebufferSize();
 	int		is_alive();
 	void	put_pixel(Vector2 pos, int color);
 	void	put_triangle(Vector2 pos1, Vector2 pos2, Vector2 pos3, int color);
