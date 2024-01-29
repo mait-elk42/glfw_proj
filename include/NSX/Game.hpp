@@ -6,7 +6,7 @@
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 19:21:26 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/01/28 18:48:58 by mait-elk         ###   ########.fr       */
+/*   Updated: 2024/01/30 00:14:49 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ public:
 	int		is_alive();
 	void	put_pixel(Vector2 pos, Color c);
 	void	put_triangle(Vector2 pos1, Vector2 pos2, Vector2 pos3, int color);
+	void	put_square(GameObject object);
 	void	Clear_Window();
 	void	ViewPort(int x, int y, int width, int height);
 	int		IsPressed(int key_ascii);

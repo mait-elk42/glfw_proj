@@ -6,7 +6,7 @@
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 21:37:34 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/01/28 18:52:37 by mait-elk         ###   ########.fr       */
+/*   Updated: 2024/01/30 00:27:40 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,12 +103,12 @@ void GameContext::put_pixel(Vector2 pos, Color c)
 void	GameContext::Clear_Window()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void	GameContext::ViewPort(int x, int y, int width, int height)
 {
-   glViewport(x, y, width, height);
+	glViewport(x, y, width, height);
 }
 
 void	GameContext::Ortho_Projection(double left, double right, double bottom, double top, double zNear, double zFar)
@@ -125,6 +125,16 @@ void	GameContext::put_triangle(Vector2 pos1, Vector2 pos2, Vector2 pos3, int col
     glVertex2i(pos2.x, pos2.y);
     glVertex2i(pos3.x, pos3.y);
     glEnd();
+}
+void	GameContext::put_square(GameObject object)
+{
+	glBegin(GL_TRIANGLE_STRIP);
+	glColor3f((float)object.color.r / 255.0f, (float)object.color.g / 255.0f, (float)object.color.b / 255.0f);
+	glVertex2i(object.position.x, object.position.y);
+	glVertex2i(object.position.x+object.size.x, object.position.y);
+	glVertex2i(object.position.x, object.position.y+object.size.y);
+	glVertex2i(object.position.x+object.size.x, object.position.y+object.size.y);
+	glEnd();
 }
 int	GameContext::IsPressed(int key_ascii)
 {
