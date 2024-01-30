@@ -6,42 +6,75 @@
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 22:48:20 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/01/30 00:29:19 by mait-elk         ###   ########.fr       */
+/*   Updated: 2024/01/30 15:47:24 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <NSX/Game.hpp>
-#include <dlfcn.h>
+#define STB_IMAGE_IMPLEMENTATION
+#include "include/NSX/stb_image.h"
 
 #define W_HEIGHT 500
 #define W_WIDTH 500
 
-int	main() {
-    int	speed = 500;
-    int gravity = 250;
+int	main2() {
+    int	speed = 400;
+    int gravity = 400;
+	int in_floor = 0;
+	int jumping = 0;
 
 
-	GameObject square(Vector2(500, 100), Vector2(500, 500), Color(200, 200, 100));
+	GameObject square(Vector2(100, 100), Vector2(50, 50), Color(200, 200, 100));
+	GameObject enemy(Vector2(500, 100), Vector2(50, 50), Color(255, 0, 0));
 	GameContext *game = new GameContext(500, 1000, (char *)"GAME ! OSF", NULL, NULL);
 	// glfwSetInputMode(game->windowptr, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-
 	while (game->is_alive())
 	{
 		game->ViewPort(0, 0, game->window_width, game->window_height);
 		game->Ortho_Projection(0, game->GetWindowSize().x, game->GetWindowSize().y, 0, -10, 10);
 		game->Clear_Window();
 
-		square.position.y -= (speed * (game->IsPressed('W'))) * game->DeltaTime;
-		square.position.x -= (speed * (game->IsPressed('A'))) * game->DeltaTime;
-		square.position.y += (speed * (game->IsPressed('S'))) * game->DeltaTime;
-		square.position.x += (speed * (game->IsPressed('D'))) * game->DeltaTime;
-		// if (v.y + square.size.y < 500)
-		// 	v.y += game->DeltaTime * (gravity);
+		if (game->IsPressed('W'))
+				square.position.y -= speed * game->DeltaTime;
+		if (game->IsPressed('A'))
+				square.position.x -= speed * game->DeltaTime;
+		if (game->IsPressed('S'))
+				square.position.y += speed * game->DeltaTime;
+		if (game->IsPressed('D'))
+				square.position.x += speed * game->DeltaTime;
+		
+		if (square.position.y + square.size.y < game->GetWindowSize().y)
+			square.position.y += game->DeltaTime * (gravity);
+		else
+			in_floor = 1;
+		if (enemy.position.y + enemy.size.y < game->GetWindowSize().y)
+			enemy.position.y += game->DeltaTime * (gravity);
+		if ((game->IsPressed(' ') && in_floor) || jumping)
+		{
+			if (jumping++ < 10)
+				square.position.y-= game->DeltaTime * (900);
+			else
+				in_floor = jumping = 0;
+		}
 
-		// printf("FPS(%d)\n", game->FPS);
-		// printf("x%d y%d\n", v.x, v.y);
 		game->put_square(square);
+		game->put_square(enemy);
+		glfwSwapBuffers(game->windowptr);
+	}
+	return 0;
+}
+
+
+int	main() {
+	GameContext *game = new GameContext(500, 1000, (char *)"GAME ! OSF", NULL, NULL);
+	while (game->is_alive())
+	{
+		game->ViewPort(0, 0, game->window_width, game->window_height);
+		game->Ortho_Projection(0, game->GetWindowSize().x, game->GetWindowSize().y, 0, -10, 10);
+		game->Clear_Window();
+		
 		glfwSwapBuffers(game->windowptr);
 	}
 	return 0;

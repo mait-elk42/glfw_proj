@@ -6,7 +6,7 @@
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 21:29:04 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/01/28 16:10:34 by mait-elk         ###   ########.fr       */
+/*   Updated: 2024/01/30 02:15:44 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,14 @@ int Vector2::operator==(Vector2 v2)
 int Vector2::operator!=(Vector2 v2)
 {
 	return (this->x != v2.x || this->y != v2.y);
+}
+
+Vector2 Vector2::operator-=(Vector2 v2)
+{
+	return (Vector2(this->x-v2.x, this->y-v2.y));
+}
+
+Vector2 Vector2::operator+=(Vector2 v2)
+{
+	return (Vector2(this->x+v2.x, this->y+v2.y));
 }

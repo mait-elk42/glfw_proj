@@ -6,7 +6,7 @@
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 21:37:34 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/01/30 00:27:40 by mait-elk         ###   ########.fr       */
+/*   Updated: 2024/01/30 04:33:40 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void GameContext::put_pixel(Vector2 pos, Color c)
 
 void	GameContext::Clear_Window()
 {
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
