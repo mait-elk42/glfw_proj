@@ -1,8 +1,9 @@
+#include <NSX/Texture.hpp>
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #define STB_IMAGE_IMPLEMENTATION
-#include <stb/stb_image.h>
+#include <NSX/stb_image.h>
 
 #include<string>
 #include<fstream>
@@ -195,7 +196,6 @@ public:
 		glDeleteBuffers(1, &ID);
 	}
 };
-
 class VAO
 {
 public:
@@ -231,9 +231,6 @@ public:
 		glDeleteVertexArrays(1, &ID);
 	}
 };
-
-// #include "EBO.h"
-
 class EBO
 {
 public:
@@ -374,7 +371,7 @@ int main()
 		stbi_set_flip_vertically_on_load(true);
 		// Reads the image from a file and stores it in bytes
 		unsigned char* bytes = stbi_load("textures/marimonda.png", &widthImg, &heightImg, &numColCh, 0);
-
+		Texture img("adasdad.png", Vector2Zero, Vector2Zero);
 		// Generates an OpenGL texture object
 		glGenTextures(1, &ID_texture);
 		// Assigns the texture to a Texture Unit
