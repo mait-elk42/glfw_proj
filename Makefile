@@ -6,7 +6,7 @@
 #    By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/25 19:09:01 by mait-elk          #+#    #+#              #
-#    Updated: 2024/01/30 16:11:42 by mait-elk         ###   ########.fr        #
+#    Updated: 2024/01/30 22:29:37 by mait-elk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,11 +19,12 @@ OBJS=$(SRCS:%.cpp=%.o)
 LIBNSX=lib/libNSX.so
 CC=c++
 NAME=game
+MAIN= image_load_example
 
 all: $(NAME)
 
-$(NAME): main.o $(LIBNSX)
-	$(CC) main.o -o $(NAME) -framework AppKit -framework OpenGL -framework IOKit -framework CoreVideo -L lib -lNSX  -L lib -lGLEW -lglfw3
+$(NAME): $(MAIN).o $(LIBNSX)
+	$(CC) $(MAIN).o -o $(NAME) -framework AppKit -framework OpenGL -framework IOKit -framework CoreVideo -L lib -lNSX  -L lib -lGLEW -lglfw3
 
 srcs/%.o: srcs/%.cpp
 	$(CC) $(FLAGS) -c -fPIC $< -o $@ -I $(INC_PATH)
@@ -31,13 +32,13 @@ srcs/%.o: srcs/%.cpp
 srcs/%.o: srcs/%.c
 	cc $(FLAGS) -c -fPIC $< -o $@ -I $(INC_PATH)
 
-main.o: main.cpp
-	$(CC) -c main.cpp -o main.o -I $(INC_PATH)
+$(MAIN).o: $(MAIN).cpp
+	$(CC) -c $(MAIN).cpp -o $(MAIN).o -I $(INC_PATH)
 
 $(LIBNSX): $(OBJS)
 	c++ -shared $(OBJS) srcs/glad.o -o $(LIBNSX) -framework AppKit -framework OpenGL -framework IOKit -framework CoreVideo -L lib -lglfw3 -lGLEW
 clean:
-	rm -f $(OBJS) main.o
+	rm -f $(OBJS) $(MAIN).o
 
 fclean: clean
 	rm -f $(NAME) $(LIBNSX)
