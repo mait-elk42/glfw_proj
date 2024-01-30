@@ -72,6 +72,8 @@
 		"type_traits": "cpp",
 		"typeinfo": "cpp",
 		"utility": "cpp",
-		"valarray": "cpp"
+		"valarray": "cpp",
+		"__functional_base_03": "cpp",
+		"filesystem": "cpp"
 	}
 }

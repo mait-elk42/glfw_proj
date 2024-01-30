@@ -12,8 +12,9 @@ in vec2 texCoord;
 // Gets the Texture Unit from the main function
 uniform sampler2D tex0;
 
-
 void main()
 {
+	if (texture(tex0, texCoord).a < 0.1)
+		discard;
 	FragColor = texture(tex0, texCoord);
 }
