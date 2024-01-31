@@ -1,4 +1,5 @@
 #include <NSX/Texture.hpp>
+#include <NSX/Shader.hpp>
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -301,7 +302,7 @@ GLuint indices[] = {
 
 int main()
 {
-	GLuint ID;
+	// GLuint ID;
     if (!glfwInit())
     {
         std::cout << "Failed to initialize GLFW" << std::endl;
@@ -332,37 +333,49 @@ int main()
 	const char* vertexSource = v.c_str();
 	const char* fragmentSource = f.c_str();
 
+	Shader shader(vertexSource, fragmentSource);
+
+	/**
+	 * VERTEX SHADER CREATED .. *^ 
+	*/
 	// Create Vertex Shader Object and get its reference
-	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	// Attach Vertex Shader source to the Vertex Shader Object
-	glShaderSource(vertexShader, 1, &vertexSource, NULL);
-	// Compile the Vertex Shader into machine code
-	glCompileShader(vertexShader);
-	// Checks if Shader compiled succesfully
-	// compileErrors(vertexShader, "VERTEX");
-
-	// Create Fragment Shader Object and get its reference
-	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	// Attach Fragment Shader source to the Fragment Shader Object
-	glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
-	// Compile the Vertex Shader into machine code
-	glCompileShader(fragmentShader);
-	// Checks if Shader compiled succesfully
-	// compileErrors(fragmentShader, "FRAGMENT");
-
+	// GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	// // Attach Vertex Shader source to the Vertex Shader Object
+	// glShaderSource(vertexShader, 1, &vertexSource, NULL);
+	// // Compile the Vertex Shader into machine code
+	// glCompileShader(vertexShader);
+	// // Checks if Shader compiled succesfully
+	// // compileErrors(vertexShader, "VERTEX");
+	/**
+	 * VERTEX FRAGMENT CREATED .. *^ 
+	*/
+	// // Create Fragment Shader Object and get its reference
+	// GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	// // Attach Fragment Shader source to the Fragment Shader Object
+	// glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
+	// // Compile the Vertex Shader into machine code
+	// glCompileShader(fragmentShader);
+	// // Checks if Shader compiled succesfully
+	// // compileErrors(fragmentShader, "FRAGMENT");
+	/*
+	* CREATING A COMPILER TO COMPILE THE SHADERS
+	*/
 	// Create Shader Program Object and get its reference
-	ID = glCreateProgram();
-	// Attach the Vertex and Fragment Shaders to the Shader Program
-	glAttachShader(ID, vertexShader);
-	glAttachShader(ID, fragmentShader);
-	// Wrap-up/Link all the shaders together into the Shader Program
-	glLinkProgram(ID);
+	// ID = glCreateProgram();
+	// // Attach the Vertex and Fragment Shaders to the Shader Program
+	// glAttachShader(ID, vertexShader);
+	// glAttachShader(ID, fragmentShader);
+	// // Wrap-up/Link all the shaders together into the Shader Program
+	// glLinkProgram(ID);
 	// Checks if Shaders linked succesfully
 	// compileErrors(ID, "PROGRAM");
 
+	/*
+	* DELETING THE SHADERS AFTER REGISTER
+	*/
 	// Delete the now useless Vertex and Fragment Shader objects
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
+	// glDeleteShader(vertexShader);
+	// glDeleteShader(fragmentShader);
 
     // Generates Vertex Array Object and binds it
 	GLuint VAO1_ID;
@@ -451,9 +464,9 @@ int main()
 		// Unbinds the OpenGL Texture object so that it can't accidentally be modified
 //		 glBindTexture(GL_TEXTURE_2D, 0);
     // popCat.texUnit(shaderProgram, "tex0", 0);
-		GLuint texUni = glGetUniformLocation(ID, "tex0");
+		// glUseProgram(shader.GetCompilerID());
+		GLuint texUni = glGetUniformLocation(shader.GetCompilerID(), "tex0");
 		// Shader needs to be activated before changing the value of a uniform
-		glUseProgram(ID);
 		// Sets the value of the uniform
 		glUniform1i(texUni, 1);
     // Main while loop
@@ -484,7 +497,11 @@ int main()
     // popCat.Delete();
 	glDeleteTextures(1, &ID_texture);
     // shaderProgram.Delete();
-	glDeleteProgram(ID);
+	/**
+	 * ITS WILL DELETE WHEN DESTROY THE SHADER CLASS *&^ OR YOU CAN DESTROY IT MANUALLY
+	*/
+	shader.DestroyCompiler();
+	
 
     glfwDestroyWindow(window);
     glfwTerminate();
