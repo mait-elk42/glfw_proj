@@ -6,7 +6,7 @@
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 22:32:52 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/01/30 22:40:09 by mait-elk         ###   ########.fr       */
+/*   Updated: 2024/01/31 16:54:31 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,15 @@
 #include <NSX/Vector2.hpp>
 class Texture{
 public:
-	void *imgptr;
-	Vector2 position;
-	Vector2 xy;
-	int cmp;
-	Vector2 scale;
+	unsigned int	SHADER_PROG_ID;
+	unsigned char 	*imgptr;
+	unsigned int	ID_texture;
+	int 			cmp;
+	int 			img_width;
+	int 			imt_height;
+	Vector2 		position;
+	Vector2 		xy;
+	Vector2 		scale;
 	Texture(const char *filename, Vector2 position, Vector2 scale);
 };
 

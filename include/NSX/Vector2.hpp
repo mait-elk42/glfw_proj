@@ -6,7 +6,7 @@
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 21:28:50 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/01/30 02:14:37 by mait-elk         ###   ########.fr       */
+/*   Updated: 2024/01/31 16:41:17 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #define VECTOR2_HPP
 
 #define Vector2Zero  Vector2::NewVectorZero()
-#define Vector2One  Vector(1, 1)
+#define Vector2One  Vector2(1, 1)
 
 class Vector2
 {
