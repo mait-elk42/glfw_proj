@@ -6,15 +6,15 @@
 #    By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/25 19:09:01 by mait-elk          #+#    #+#              #
-#    Updated: 2024/01/30 22:32:30 by mait-elk         ###   ########.fr        #
+#    Updated: 2024/01/31 19:11:55 by mait-elk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 PROJ_PATH=$(CURDIR)
 INC_PATH=$(PROJ_PATH)/include
 FLAGS=-Werror -Wextra -Wall
-HEADPATH=$(INC_PATH)NSX/Game.hpp $(INC_PATH)NSX/Vector2.hpp $(INC_PATH)NSX/GameObject.hpp $(INC_PATH)NSX/Colors.hpp $(INC_PATH)NSX/Texture.hpp
-SRCS=  srcs/Vector2.cpp srcs/Game.cpp srcs/GameObject.cpp srcs/Colors.cpp srcs/Texture.cpp
+HEADPATH=$(INC_PATH)NSX/Game.hpp $(INC_PATH)NSX/Vector2.hpp $(INC_PATH)NSX/GameObject.hpp $(INC_PATH)NSX/Colors.hpp $(INC_PATH)NSX/Texture.hpp $(INC_PATH)NSX/Shader.hpp
+SRCS=  srcs/Vector2.cpp srcs/Game.cpp srcs/GameObject.cpp srcs/Colors.cpp srcs/Texture.cpp srcs/Shader.cpp
 OBJS=$(SRCS:%.cpp=%.o)
 LIBNSX=lib/libNSX.so
 CC=c++

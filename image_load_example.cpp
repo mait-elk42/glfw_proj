@@ -11,6 +11,30 @@
 #include<iostream>
 #include<cerrno>
 
+void compileErrors(unsigned int shader, const char* type)
+{
+	GLint hasCompiled;
+	char infoLog[1024];
+	if (type[0] != 'P')
+	{
+		glGetShaderiv(shader, GL_COMPILE_STATUS, &hasCompiled);
+		if (hasCompiled == GL_FALSE)
+		{
+			glGetShaderInfoLog(shader, 1024, NULL, infoLog);
+			std::cout << "SHADER_COMPILATION_ERROR for:" << type << "\n" << infoLog << std::endl;
+		}
+	}
+	else
+	{
+		glGetProgramiv(shader, GL_LINK_STATUS, &hasCompiled);
+		if (hasCompiled == GL_FALSE)
+		{
+			glGetProgramInfoLog(shader, 1024, NULL, infoLog);
+			std::cout << "SHADER_LINKING_ERROR for:" << type << "\n" << infoLog << std::endl;
+		}
+	}
+}
+
 std::string get_file_contents(const char* filename)
 {
 	std::ifstream in(filename, std::ios::binary);
@@ -231,35 +255,34 @@ public:
 		glDeleteVertexArrays(1, &ID);
 	}
 };
-class EBO
-{
-public:
-	// ID reference of Elements Buffer Object
-	GLuint ID;
-	// Constructor that generates a Elements Buffer Object and links it to indices
-	EBO(GLuint* indices, GLsizeiptr size)
-	{
-		glGenBuffers(1, &ID);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ID);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_STATIC_DRAW);
-	}
-
-	// Binds the EBO
-	void Bind()
-	{
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ID);
-	}
-	// Unbinds the EBO
-	void Unbind()
-	{
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	}
-	// Deletes the EBO
-	void Delete()
-	{
-		glDeleteBuffers(1, &ID);
-	}
-};
+// class EBO
+// {
+// public:
+// 	// ID reference of Elements Buffer Object
+// 	GLuint ID;
+// 	// Constructor that generates a Elements Buffer Object and links it to indices
+// 	EBO(GLuint* indices, GLsizeiptr size)
+// 	{
+// 		glGenBuffers(1, &ID);
+// 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ID);
+// 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_STATIC_DRAW);
+// 	}
+// 	// Binds the EBO
+// 	void Bind()
+// 	{
+// 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ID);
+// 	}
+// 	// Unbinds the EBO
+// 	void Unbind()
+// 	{
+// 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+// 	}
+// 	// Deletes the EBO
+// 	void Delete()
+// 	{
+// 		glDeleteBuffers(1, &ID);
+// 	}
+// };
 
 // Vertices coordinates
 GLfloat vertices[] = {
@@ -291,7 +314,7 @@ int main()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-    GLFWwindow* window = glfwCreateWindow(1000, 1000, "YoutubeOpenGL", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(1000, 1000, "OPENGL IMAGE TEST", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -342,25 +365,52 @@ int main()
 	glDeleteShader(fragmentShader);
 
     // Generates Vertex Array Object and binds it
-    VAO VAO1;
-    VAO1.Bind();
+	GLuint VAO1_ID;
+    // VAO VAO1;
+	glGenVertexArrays(1, &VAO1_ID);
+    // VAO1.Bind();
+	glBindVertexArray(VAO1_ID);
 
     // Generates Vertex Buffer Object and links it to vertices
-    VBO VBO1(vertices, sizeof(vertices));
+    // VBO VBO1(vertices, sizeof(vertices));
+	GLuint VBO1_ID;
+	glGenBuffers(1, &VBO1_ID);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO1_ID);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     // Generates Element Buffer Object and links it to indices
-    EBO EBO1(indices, sizeof(indices));
+    // EBO EBO1(indices, sizeof(indices));
+	GLuint EBO_ID;
+	glGenBuffers(1, &EBO_ID);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_ID);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     // Links VBO attributes such as coordinates and colors to VAO
-    VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 8 * sizeof(float), (void*)0);
-    VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-    VAO1.LinkAttrib(VBO1, 2, 2, GL_FLOAT, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    // VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 8 * sizeof(float), (void*)0);
+	// VBO1.Bind();
+	glBindBuffer(GL_ARRAY_BUFFER, VBO1_ID);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+	// VBO1.Unbind();
+    // VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	// VBO1.Bind();
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+	// VBO1.Unbind();
+    // VAO1.LinkAttrib(VBO1, 2, 2, GL_FLOAT, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	// VBO1.Bind();
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
+	// VBO1.Unbind();
     // Unbind all to prevent accidentally modifying them
-    VAO1.Unbind();
-    VBO1.Unbind();
-    EBO1.Unbind();
+    // VAO1.Unbind();
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+    // VBO1.Unbind();
+    // EBO1.Unbind();
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     // Gets ID of uniform called "scale"
-    GLuint uniID = glGetUniformLocation(ID, "scale");
+    // GLuint uniID = glGetUniformLocation(ID, "scale");
 	GLuint ID_texture;
     // Texture popCat("textures/marimonda.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
 	// Assigns the type of the texture ot the texture object
@@ -368,23 +418,23 @@ int main()
 		// Stores the width, height, and the number of color channels of the image
 		int widthImg, heightImg, numColCh;
 		// Flips the image so it appears right side up
-		stbi_set_flip_vertically_on_load(true);
 		// Reads the image from a file and stores it in bytes
-		unsigned char* bytes = stbi_load("textures/marimonda.png", &widthImg, &heightImg, &numColCh, 0);
-		Texture img("textures/marimonda.png", Vector2(100, 100), Vector2One);
+		stbi_set_flip_vertically_on_load(true);
+		unsigned char* bytes = stbi_load("textures/player.png", &widthImg, &heightImg, &numColCh, 0);
+		// Texture img("textures/marimonda.png", Vector2(100, 100), Vector2One);
 		// Generates an OpenGL texture object
 		glGenTextures(1, &ID_texture);
 		// Assigns the texture to a Texture Unit
-		glActiveTexture(GL_TEXTURE0);
+		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, ID_texture);
 
 		// Configures the type of algorithm that is used to make the image smaller or bigger
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+		// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 		// Configures the way the texture repeats (if it does at all)
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 		// Extra lines in case you choose to use GL_CLAMP_TO_BORDER
 		// float flatColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
@@ -399,34 +449,38 @@ int main()
 		stbi_image_free(bytes);
 
 		// Unbinds the OpenGL Texture object so that it can't accidentally be modified
-		glBindTexture(GL_TEXTURE_2D, 0);
+//		 glBindTexture(GL_TEXTURE_2D, 0);
     // popCat.texUnit(shaderProgram, "tex0", 0);
 		GLuint texUni = glGetUniformLocation(ID, "tex0");
 		// Shader needs to be activated before changing the value of a uniform
 		glUseProgram(ID);
 		// Sets the value of the uniform
-		glUniform1i(texUni, 0);
+		glUniform1i(texUni, 1);
     // Main while loop
     while (!glfwWindowShouldClose(window))
     {
-		glOrtho(0, 1000, 1000, 0, -10, 10);
+		// glOrtho(0, 1000, 1000, 0, -10, 10);
         glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         // shaderProgram.Activate();
-		glUseProgram(ID);
-        glUniform1f(uniID, 0.5f);
+		// glUseProgram(ID);
+        // glUniform1f(uniID, 3);
         // popCat.Bind();
 		glBindTexture(GL_TEXTURE_2D, ID_texture);
 
-        VAO1.Bind();
+        // VAO1.Bind();
+		glBindVertexArray(VAO1_ID);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-    VAO1.Delete();
-    VBO1.Delete();
-    EBO1.Delete();
+    // VAO1.Delete();
+	glDeleteVertexArrays(1, &VAO1_ID);
+    // VBO1.Delete();
+	glDeleteBuffers(1, &VBO1_ID);
+    // EBO1.Delete();
+	glDeleteBuffers(1, &EBO_ID);
     // popCat.Delete();
 	glDeleteTextures(1, &ID_texture);
     // shaderProgram.Delete();

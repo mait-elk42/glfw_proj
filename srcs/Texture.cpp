@@ -6,7 +6,7 @@
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 22:35:44 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/01/31 16:57:47 by mait-elk         ###   ########.fr       */
+/*   Updated: 2024/01/31 17:51:18 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,19 @@ Texture::Texture(const char *filename, Vector2 position, Vector2 scale)
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexSource, NULL);
 	glCompileShader(vertexShader);
+	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
+	glCompileShader(fragmentShader);
 	this->SHADER_PROG_ID = glCreateProgram();
-	glAttachShader(ID, vertexShader);
-	glAttachShader(ID, fragmentShader);
-	glLinkProgram(ID);
+	glAttachShader(this->SHADER_PROG_ID, vertexShader);
+	glAttachShader(this->SHADER_PROG_ID, fragmentShader);
+	glLinkProgram(this->SHADER_PROG_ID);
 	// compileErrors(ID, "PROGRAM");
 
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 
-    GLuint uniID = glGetUniformLocation(this->SHADER_PROG_ID, "scale");
+    // GLuint uniID = glGetUniformLocation(this->SHADER_PROG_ID, "scale");
 	this->position = position;
 	this->scale = scale;
 	stbi_set_flip_vertically_on_load(true);
@@ -78,6 +81,6 @@ Texture::Texture(const char *filename, Vector2 position, Vector2 scale)
 
 	stbi_image_free(this->imgptr);
 	glBindTexture(GL_TEXTURE_2D, 1);
-	GLuint texUni = glGetUniformLocation(this->SHADER_PROG_ID, "tex0");
+	// GLuint texUni = glGetUniformLocation(this->SHADER_PROG_ID, "tex0");
 	// printf("%d\n", ID_texture);
 }
