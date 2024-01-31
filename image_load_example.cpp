@@ -1,8 +1,7 @@
+#include <NSX/Game.hpp>
 #include <NSX/Texture.hpp>
 #include <NSX/Shader.hpp>
 #include <iostream>
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
 #define STB_IMAGE_IMPLEMENTATION
 #include <NSX/stb_image.h>
 

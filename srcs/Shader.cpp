@@ -6,12 +6,13 @@
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 19:13:26 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/01/31 22:03:38 by mait-elk         ###   ########.fr       */
+/*   Updated: 2024/01/31 22:28:39 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <GLFW/glfw3.h>
 #include <NSX/Shader.hpp>
+// #include <glad/glad.h>
 
 Shader::Shader(const char *vertextSource, const char *fragmentSource)
 {
@@ -28,6 +29,9 @@ Shader::Shader(const char *vertextSource, const char *fragmentSource)
 	glDeleteShader(this->vertexShader_ID);
 	glDeleteShader(this->fragmentShader_ID);
 	glUseProgram(this->COMPILER_ID);
+
+	// glGenVertexArrays(1, &this->VAO_ID);
+	// glBindVertexArray(this->VAO_ID);
 }
 
 Shader::~Shader()

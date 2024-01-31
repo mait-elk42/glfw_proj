@@ -6,7 +6,7 @@
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 19:21:26 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/01/31 21:49:41 by mait-elk         ###   ########.fr       */
+/*   Updated: 2024/01/31 22:36:18 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define GAME_HPP
 #include <stdio.h>
 #include <stdlib.h>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <NSX/Vector2.hpp>
 #include <NSX/GameObject.hpp>
