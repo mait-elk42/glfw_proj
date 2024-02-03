@@ -1,15 +1,5 @@
 #include <NSX/Game.hpp>
-#include <NSX/Texture.hpp>
-#include <NSX/Shader.hpp>
-#include <iostream>
-#define STB_IMAGE_IMPLEMENTATION
-#include <NSX/stb_image.h>
-
-#include<string>
-#include<fstream>
-#include<sstream>
-#include<iostream>
-#include<cerrno>
+#include <NSX/stbi_loader_image.hpp>
 
 void compileErrors(unsigned int shader, const char* type)
 {
@@ -285,19 +275,19 @@ public:
 // };
 
 // Vertices coordinates
-GLfloat vertices[] = {
-    //     COORDINATES     /        COLORS      /   TexCoord  //
-    0.1f, 0.1f, 0.0f,	0.0f, 0.0f, 1.0f,	1.0f, 1.0f, // Upper right corner
-    -0.1f, 0.1f, 0.0f,	0.0f, 1.0f, 0.0f,	0.0f, 1.0f, // Upper left corner
-    -0.1f, -0.1f, 0.0f,	1.0f, 0.0f, 0.0f,	0.0f, 0.0f, // Lower left corner
-    0.1f, -0.1f, 0.0f,	1.0f, 1.0f, 1.0f,	1.0f, 0.0f  // Lower right corner
-};
+// GLfloat vertices[] = {
+//     //     COORDINATES     /        COLORS      /   TexCoord  //
+//     0.1f, 0.1f, 0.0f,	0.0f, 0.0f, 1.0f,	1.0f, 1.0f, // Upper right corner
+//     -0.1f, 0.1f, 0.0f,	0.0f, 1.0f, 0.0f,	0.0f, 1.0f, // Upper left corner
+//     -0.1f, -0.1f, 0.0f,	1.0f, 0.0f, 0.0f,	0.0f, 0.0f, // Lower left corner
+//     0.1f, -0.1f, 0.0f,	1.0f, 1.0f, 1.0f,	1.0f, 0.0f  // Lower right corner
+// };
 
 // Indices for vertices order
-GLuint indices[] = {
-    0, 2, 1, // Upper triangle
-    0, 3, 2  // Lower triangle
-};
+// GLuint indices[] = {
+//     0, 2, 1, // Upper triangle
+//     0, 3, 2  // Lower triangle
+// };
 
 int main()
 {
@@ -324,7 +314,7 @@ int main()
 
     glfwMakeContextCurrent(window);
     gladLoadGL();
-
+    glMatrixMode(GL_PROJECTION);
     // Generates Shader object using shaders default.vert and default.frag
     // Shader shaderProgram("default.vert", "default.frag");
 	std::string v = get_file_contents("default.vert");
@@ -333,6 +323,7 @@ int main()
 	const char* fragmentSource = f.c_str();
 
 	Shader shader(vertexSource, fragmentSource);
+	Texture texture("textures/image.png", Vector2One, Vector2One);
 
 	/**
 	 * VERTEX SHADER CREATED .. *^ 
@@ -368,107 +359,97 @@ int main()
 	// glLinkProgram(ID);
 	// Checks if Shaders linked succesfully
 	// compileErrors(ID, "PROGRAM");
-
 	/*
 	* DELETING THE SHADERS AFTER REGISTER
 	*/
 	// Delete the now useless Vertex and Fragment Shader objects
 	// glDeleteShader(vertexShader);
 	// glDeleteShader(fragmentShader);
-
+	//OLD VERT CODE (TMP)
     // Generates Vertex Array Object and binds it
-	GLuint VAO1_ID;
+	// GLuint VAO1_ID;
     // VAO VAO1;
-	glGenVertexArrays(1, &VAO1_ID);
+	// glGenVertexArrays(1, &VAO1_ID);
     // VAO1.Bind();
-	glBindVertexArray(VAO1_ID);
-
+	// glBindVertexArray(VAO1_ID);
     // Generates Vertex Buffer Object and links it to vertices
     // VBO VBO1(vertices, sizeof(vertices));
-	GLuint VBO1_ID;
-	glGenBuffers(1, &VBO1_ID);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO1_ID);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	// GLuint VBO1_ID;
+	// glGenBuffers(1, &shader.VBO_ID);
+	// glBindBuffer(GL_ARRAY_BUFFER, shader.VBO_ID);
+	// glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     // Generates Element Buffer Object and links it to indices
     // EBO EBO1(indices, sizeof(indices));
-	GLuint EBO_ID;
-	glGenBuffers(1, &EBO_ID);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_ID);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
+	// GLuint EBO_ID;
+	// glGenBuffers(1, &EBO_ID);
+	// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_ID);
+	// glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     // Links VBO attributes such as coordinates and colors to VAO
     // VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 8 * sizeof(float), (void*)0);
 	// VBO1.Bind();
-	glBindBuffer(GL_ARRAY_BUFFER, VBO1_ID);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
+	// glBindBuffer(GL_ARRAY_BUFFER, shader.VBO_ID);
+	// glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	// glEnableVertexAttribArray(0);
 	// VBO1.Unbind();
     // VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	// VBO1.Bind();
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
+	// glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	// glEnableVertexAttribArray(1);
 	// VBO1.Unbind();
     // VAO1.LinkAttrib(VBO1, 2, 2, GL_FLOAT, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	// VBO1.Bind();
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
+	// glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	// glEnableVertexAttribArray(2);
 	// VBO1.Unbind();
     // Unbind all to prevent accidentally modifying them
     // VAO1.Unbind();
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
+	// glBindBuffer(GL_ARRAY_BUFFER, 0);
+	// glBindVertexArray(0);
     // VBO1.Unbind();
     // EBO1.Unbind();
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
+	// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     // Gets ID of uniform called "scale"
     // GLuint uniID = glGetUniformLocation(ID, "scale");
-	GLuint ID_texture;
+	// GLuint ID_texture;
     // Texture popCat("textures/marimonda.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
 	// Assigns the type of the texture ot the texture object
-
 		// Stores the width, height, and the number of color channels of the image
-		int widthImg, heightImg, numColCh;
+		// int widthImg, heightImg, numColCh;
 		// Flips the image so it appears right side up
 		// Reads the image from a file and stores it in bytes
-		stbi_set_flip_vertically_on_load(true);
-		unsigned char* bytes = stbi_load("textures/player.png", &widthImg, &heightImg, &numColCh, 0);
+		// stbi_set_flip_vertically_on_load(true);
+		// unsigned char* bytes = stbi_load("textures/player.png", &widthImg, &heightImg, &numColCh, 0);
 		// Texture img("textures/marimonda.png", Vector2(100, 100), Vector2One);
 		// Generates an OpenGL texture object
-		glGenTextures(1, &ID_texture);
+		// glGenTextures(1, &ID_texture);
 		// Assigns the texture to a Texture Unit
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, ID_texture);
-
+		// glActiveTexture(GL_TEXTURE1);
+		// glBindTexture(GL_TEXTURE_2D, ID_texture);
 		// Configures the type of algorithm that is used to make the image smaller or bigger
 		// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
 		// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
 		// Configures the way the texture repeats (if it does at all)
 		// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
 		// Extra lines in case you choose to use GL_CLAMP_TO_BORDER
 		// float flatColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
 		// glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, flatColor);
-
 		// Assigns the image to the OpenGL Texture object
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, widthImg, heightImg, 0, GL_RGBA, GL_UNSIGNED_BYTE, bytes);
+		// glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, widthImg, heightImg, 0, GL_RGBA, GL_UNSIGNED_BYTE, bytes);
 		// Generates MipMaps
-		glGenerateMipmap(GL_TEXTURE_2D);
-
+		// glGenerateMipmap(GL_TEXTURE_2D);
 		// Deletes the image data as it is already in the OpenGL Texture object
-		stbi_image_free(bytes);
-
+		// stbi_image_free(bytes);
 		// Unbinds the OpenGL Texture object so that it can't accidentally be modified
 //		 glBindTexture(GL_TEXTURE_2D, 0);
     // popCat.texUnit(shaderProgram, "tex0", 0);
 		// glUseProgram(shader.GetCompilerID());
-		GLuint texUni = glGetUniformLocation(shader.GetCompilerID(), "tex0");
-		// Shader needs to be activated before changing the value of a uniform
-		// Sets the value of the uniform
-		glUniform1i(texUni, 1);
-    // Main while loop
+
+	shader.SetUniform("tex0", 1);
+	// GLuint texUni = glGetUniformLocation(shader.GetCompilerID(), "tex0");
+	// 	// Shader needs to be activated before changing the value of a uniform
+	// 	// Sets the value of the uniform
+	// 	glUniform1i(texUni, 1);
     while (!glfwWindowShouldClose(window))
     {
 		// glOrtho(0, 1000, 1000, 0, -10, 10);
@@ -478,28 +459,29 @@ int main()
 		// glUseProgram(ID);
         // glUniform1f(uniID, 3);
         // popCat.Bind();
-		glBindTexture(GL_TEXTURE_2D, ID_texture);
-
+		// glBindTexture(GL_TEXTURE_2D, ID_texture);
+		texture.Bind();
         // VAO1.Bind();
-		glBindVertexArray(VAO1_ID);
+		// glBindVertexArray(VAO1_ID);
+		shader.bind_varr();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
+	shader.DestroyShader();
     // VAO1.Delete();
-	glDeleteVertexArrays(1, &VAO1_ID);
+	// glDeleteVertexArrays(1, &VAO1_ID);
     // VBO1.Delete();
-	glDeleteBuffers(1, &VBO1_ID);
+	// glDeleteBuffers(1, &shader.VBO_ID);
     // EBO1.Delete();
-	glDeleteBuffers(1, &EBO_ID);
+	// glDeleteBuffers(1, &EBO_ID);
     // popCat.Delete();
-	glDeleteTextures(1, &ID_texture);
+	// glDeleteTextures(1, &ID_texture);
     // shaderProgram.Delete();
 	/**
 	 * ITS WILL DELETE WHEN DESTROY THE SHADER CLASS *&^ OR YOU CAN DESTROY IT MANUALLY
 	*/
-	shader.DestroyCompiler();
 	
 
     glfwDestroyWindow(window);

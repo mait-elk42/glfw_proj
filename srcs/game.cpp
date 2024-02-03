@@ -6,7 +6,7 @@
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 21:37:34 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/01/30 04:33:40 by mait-elk         ###   ########.fr       */
+/*   Updated: 2024/02/03 04:54:46 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,19 @@ GameContext::GameContext(int window_width, int window_height, char *name, GLFWmo
 {
 	if (!glfwInit())
 			_nsx_exit((char *)"Cannot Init GLFW", -1);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	this->window_width = window_width;
 	this->window_height = window_height;
-	windowptr = glfwCreateWindow(window_height, window_width, name, monitor,  share);
-    if (!windowptr)
-		_nsx_exit((char *)"Cannot Create The Window", -1);
 	this->monitor = monitor;
 	this->share = share;
+	windowptr = glfwCreateWindow(window_height, window_width, name, this->monitor,  this->share);
+    if (!windowptr)
+		_nsx_exit((char *)"Cannot Create The Window", -1);
 	glfwMakeContextCurrent(windowptr);
+	gladLoadGL();
 	glfwSetKeyCallback(windowptr, key_callback_def);
     glMatrixMode(GL_PROJECTION);
 	this->FPS = 0;
@@ -62,7 +67,6 @@ int	GameContext::is_alive()
 		this->DeltaTime = this->time.curr_time - this->time.last_time;
 		this->time.last_time = this->time.curr_time;
 		glfwGetFramebufferSize(windowptr, &this->window_width, &this->window_height);
-		glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
 		glfwPollEvents();
 		if (second < 1)
@@ -174,4 +178,9 @@ Vector2	GameContext::GetFramebufferSize()
 
 	glfwGetFramebufferSize(windowptr, &fbuffsize.x, &fbuffsize.y);
 	return (fbuffsize);
+}
+
+void	GameContext::DrawBuffer()
+{
+    glfwSwapBuffers(this->windowptr);
 }

@@ -6,15 +6,11 @@
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 22:48:20 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/01/30 15:47:24 by mait-elk         ###   ########.fr       */
+/*   Updated: 2024/02/03 05:27:26 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 #include <NSX/Game.hpp>
-#define STB_IMAGE_IMPLEMENTATION
-#include "include/NSX/stb_image.h"
 
 #define W_HEIGHT 500
 #define W_WIDTH 500
@@ -66,16 +62,47 @@ int	main2() {
 	return 0;
 }
 
-
-int	main() {
-	GameContext *game = new GameContext(500, 1000, (char *)"GAME ! OSF", NULL, NULL);
-	while (game->is_alive())
+std::string get_file_contents(const char* filename)
+{
+	std::ifstream in(filename, std::ios::binary);
+	if (in)
 	{
-		game->ViewPort(0, 0, game->window_width, game->window_height);
-		game->Ortho_Projection(0, game->GetWindowSize().x, game->GetWindowSize().y, 0, -10, 10);
-		game->Clear_Window();
-		
-		glfwSwapBuffers(game->windowptr);
+		std::string contents;
+		in.seekg(0, std::ios::end);
+		contents.resize(in.tellg());
+		in.seekg(0, std::ios::beg);
+		in.read(&contents[0], contents.size());
+		in.close();
+		return(contents);
 	}
-	return 0;
+	throw(errno);
+}
+
+int main()
+{
+	GameContext context(1000, 1000, "GAME", NULL, NULL);
+	std::string v = get_file_contents("default.vert");
+	std::string f = get_file_contents("default.frag");
+	const char* vertexSource = v.c_str();
+	const char* fragmentSource = f.c_str();
+
+	Texture texture("textures/image.png", Vector2One, Vector2One);
+	Shader shader(vertexSource, fragmentSource);
+	shader.SetUniform("tex0", 1);
+    while (context.is_alive())
+    {
+		context.Ortho_Projection(0, context.GetWindowSize().x, context.GetWindowSize().y, 0, -10, 10);
+		context.ViewPort(0, 0, context.window_width, context.window_height);
+        context.Clear_Window();
+		texture.Bind();
+		shader.bind_varr();
+		context.DrawBuffer();
+	}
+
+	shader.DestroyShader();
+
+    glfwDestroyWindow(context.windowptr);
+    glfwTerminate();
+
+    return 0;
 }

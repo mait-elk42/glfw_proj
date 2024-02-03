@@ -6,11 +6,11 @@
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 21:29:04 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/01/30 02:15:44 by mait-elk         ###   ########.fr       */
+/*   Updated: 2024/02/01 23:19:12 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <NSX/Vector2.hpp>
+#include <NSX/Game.hpp>
 
 Vector2::Vector2()
 {

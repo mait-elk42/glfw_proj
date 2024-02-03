@@ -6,11 +6,11 @@
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 18:36:11 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/01/28 19:23:55 by mait-elk         ###   ########.fr       */
+/*   Updated: 2024/02/01 22:10:16 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <NSX/Colors.hpp>
+#include <NSX/Game.hpp>
 
 Color::Color()
 {

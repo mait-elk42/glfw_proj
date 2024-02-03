@@ -6,13 +6,13 @@
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 21:28:50 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/01/31 16:41:17 by mait-elk         ###   ########.fr       */
+/*   Updated: 2024/02/01 23:00:43 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR2_HPP
 #define VECTOR2_HPP
-
+# include <NSX/Game.hpp>
 #define Vector2Zero  Vector2::NewVectorZero()
 #define Vector2One  Vector2(1, 1)
 
@@ -32,6 +32,5 @@ public:
 	Vector2		operator-=(Vector2 v2);
 	Vector2		operator+=(Vector2 v2);
 };
-
 
 #endif

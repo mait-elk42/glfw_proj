@@ -6,19 +6,28 @@
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 19:21:26 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/01/31 22:36:18 by mait-elk         ###   ########.fr       */
+/*   Updated: 2024/02/03 03:49:33 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GAME_HPP
 #define GAME_HPP
-#include <stdio.h>
-#include <stdlib.h>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <NSX/Vector2.hpp>
+#include <NSX/Shader.hpp>
 #include <NSX/GameObject.hpp>
+#include <NSX/Texture.hpp>
 #include <NSX/Colors.hpp>
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <cerrno>
+
 
 typedef struct __Time{
 	float	curr_time;
@@ -51,6 +60,7 @@ public:
 	void	ViewPort(int x, int y, int width, int height);
 	int		IsPressed(int key_ascii);
 	void	Ortho_Projection(double left, double right, double bottom, double top, double zNear, double zFar);
+	void	DrawBuffer();
 };
 
 #endif

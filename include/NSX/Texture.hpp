@@ -6,25 +6,26 @@
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 22:32:52 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/01/31 22:35:02 by mait-elk         ###   ########.fr       */
+/*   Updated: 2024/02/03 03:20:26 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TEXTURE_HPP
 #define TEXTURE_HPP
-#include <NSX/Vector2.hpp>
+#include <NSX/Game.hpp>
+
 class Texture{
-public:
-	unsigned int	SHADER_PROG_ID;
+private:
 	unsigned char 	*imgptr;
 	unsigned int	ID_texture;
 	int 			cmp;
 	int 			img_width;
-	int 			imt_height;
+	int 			img_height;
 	Vector2 		position;
-	Vector2 		xy;
 	Vector2 		scale;
+public:
 	Texture(const char *filename, Vector2 position, Vector2 scale);
+	void	Bind();
 };
 
 #endif

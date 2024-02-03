@@ -6,7 +6,7 @@
 #    By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/25 19:09:01 by mait-elk          #+#    #+#              #
-#    Updated: 2024/01/31 19:11:55 by mait-elk         ###   ########.fr        #
+#    Updated: 2024/02/03 03:34:08 by mait-elk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ OBJS=$(SRCS:%.cpp=%.o)
 LIBNSX=lib/libNSX.so
 CC=c++
 NAME=game
-MAIN= image_load_example
+MAIN= main
 
 all: $(NAME)
 
