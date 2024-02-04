@@ -6,7 +6,7 @@
 /*   By: mait-elk <mait-elk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 22:48:20 by mait-elk          #+#    #+#             */
-/*   Updated: 2024/02/03 05:27:26 by mait-elk         ###   ########.fr       */
+/*   Updated: 2024/02/04 13:54:36 by mait-elk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,16 +86,24 @@ int main()
 	const char* vertexSource = v.c_str();
 	const char* fragmentSource = f.c_str();
 
-	Texture texture("textures/image.png", Vector2One, Vector2One);
+	Texture texture("textures/player.png", Vector2One, Vector2One);
 	Shader shader(vertexSource, fragmentSource);
-	shader.SetUniform("tex0", 1);
-    while (context.is_alive())
-    {
+	shader.SetUniformInt("tex0", 1);
+	shader.bind_varr();
+	float var = 0.0;
+	while (context.is_alive())
+	{
 		context.Ortho_Projection(0, context.GetWindowSize().x, context.GetWindowSize().y, 0, -10, 10);
 		context.ViewPort(0, 0, context.window_width, context.window_height);
-        context.Clear_Window();
+		context.Clear_Window();
 		texture.Bind();
-		shader.bind_varr();
+		// printf("%f\n", var);
+		if (context.IsPressed('D'))
+			var += 0.01;
+		if (context.IsPressed('A'))
+			var -= 0.01;
+		shader.SetUniformFloat("xpos", var);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		context.DrawBuffer();
 	}
 
